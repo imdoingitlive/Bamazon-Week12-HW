@@ -50,7 +50,7 @@ var addInv = function(){
   {
     properties: {
       itemNum: {
-        description: 'Which item would you like to add more of',
+        description: '\nWhich item would you like to add more of',
         type: 'integer',
         required: true
       },
@@ -84,7 +84,28 @@ var addInv = function(){
 }
 
 var addProduct = function(){
-
+  console.log("\nPlease enter the following information for the new item...");
+  inquirer.prompt([
+  {
+    name: "ProductName",
+    message: "Product Name: ",
+  }, {
+    name: "DepartmentName",
+    message: "Department Name: "
+  }, {
+    name: "Price",
+    message: "Item Price: "
+  }, {
+    name: "StockQuantity",
+    message: "Total Inventory: "
+  }]).then(function(user){
+    connection.query('INSERT INTO `products` (ProductName, DepartmentName, Price, StockQuantity) VALUES (?,?,?,?)',[user.ProductName, user.DepartmentName, user.Price, user.StockQuantity], function(err){
+      if (!err){
+        console.log("Item added!\n");
+        manage();
+      }
+    })
+  })
 }
 
 var manage = function(){
