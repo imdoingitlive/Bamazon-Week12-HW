@@ -25,10 +25,7 @@ connection.query('SELECT * FROM `products`', function(err, results, fields){
 
 var order = function(){
 
-  // prompt.message = "::";
-  // prompt.delimeter = "><";
-  // property.message = "";
-  // property.delimeter = "";
+  prompt.message = "";
 
   prompt.start();
 
