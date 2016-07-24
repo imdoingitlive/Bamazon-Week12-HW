@@ -1,3 +1,3 @@
 # Bamazon-Week13-HW
 
-(images/bamazonExample1.png)
+![alt tag](images/bamazonExample1.png)
