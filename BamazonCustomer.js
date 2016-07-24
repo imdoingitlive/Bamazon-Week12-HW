@@ -13,13 +13,16 @@ var connection = mysql.
 connection.connect(function(err){
   if(err) throw err;
   console.log('\nConnected as ID: ' + connection.threadId);
-  console.log("\nWelcome to Bamazon! Today's hot items are...\n")
+  console.log("\n==================================================\nWelcome to Bamazon! Today's hot items are...\n==================================================")
 })
 
 connection.query('SELECT * FROM `products`', function(err, results, fields){
   for (var i=0; i < results.length; i++){
     console.log("Item ID: "+ results[i].ItemID +"\nName: "+ results[i].ProductName +"\nPrice: $"+ results[i].Price);
     console.log("----------");
+  }
+  if (i === results.length){
+    order();
   }
 });
 
@@ -66,5 +69,3 @@ var order = function(){
   });
 
 }
-
-order();

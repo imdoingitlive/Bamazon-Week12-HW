@@ -50,7 +50,7 @@ var addInv = function(){
   {
     properties: {
       itemNum: {
-        description: '\nWhich item would you like to add more of',
+        description: '\nWhich item would you like to add more of? Enter an Item ID',
         type: 'integer',
         required: true
       },
@@ -70,7 +70,7 @@ var addInv = function(){
     });
 
     connection.query('SELECT * FROM `products` WHERE ItemID=?',[results.itemNum],function(err, result, fields){
-      console.log("Total inventory for "+result[0].ProductName+" now "+(result[0].StockQuantity + results.quantity)+" units...");
+      console.log("Total inventory for "+result[0].ProductName+" is now "+(result[0].StockQuantity + results.quantity)+" units...");
     
       if((result[0].StockQuantity + results.quantity) > result[0].StockQuantity){
         console.log("");
