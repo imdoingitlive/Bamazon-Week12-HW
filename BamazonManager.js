@@ -9,16 +9,20 @@ var connection = mysql.
     user: 'root',
     password: 't3st3r',
     database: 'bamazon_db'
-  })
+  });
 
 connection.connect(function(err){
   if(err) throw err;
-})
+});
 
 var viewProducts = function(){
   connection.query('SELECT * FROM `products`', function(err, results, fields){
     for (var i=0; i < results.length; i++){
       console.log("\nItem ID: "+ results[i].ItemID +"\nName: "+ results[i].ProductName +"\nPrice: $"+ results[i].Price + "\nStock: "+ results[i].StockQuantity);
+    }
+    if (i === results.length){
+      console.log("");
+      manage();
     }
   });
 }
@@ -31,12 +35,51 @@ var viewLow = function(){
       }
     }
     if (i === results.length){
-      console.log("Low inventory check complete...");
+      console.log("Low inventory check complete...\n");
+      manage();
     }
   });
 }
 
 var addInv = function(){
+  prompt.message = "";
+  
+  prompt.start();
+
+  prompt.get(
+  {
+    properties: {
+      itemNum: {
+        description: 'Which item would you like to add more of',
+        type: 'integer',
+        required: true
+      },
+      quantity: {
+        description: 'Total to add to inventory',
+        type: 'integer',
+        required: true
+      }
+    }
+  }, function(err, results){
+    connection.query('SELECT * FROM `products` WHERE ItemID=?',[results.itemNum], function(err, result, fields){
+      
+      connection.query('UPDATE `products` SET StockQuantity=? WHERE ItemID=?', [(result[0].StockQuantity + results.quantity),results.itemNum], function(){
+
+      });
+    
+    });
+
+    connection.query('SELECT * FROM `products` WHERE ItemID=?',[results.itemNum],function(err, result, fields){
+      console.log("Total inventory for "+result[0].ProductName+" now "+(result[0].StockQuantity + results.quantity)+" units...");
+    
+      if((result[0].StockQuantity + results.quantity) > result[0].StockQuantity){
+        console.log("");
+        manage();
+
+      }
+    })
+
+  });
 
 }
 
@@ -55,19 +98,15 @@ var manage = function(){
     switch(user.choice){
       case "View products":
         viewProducts();
-        manage();
         break;
       case "View low inventory":
         viewLow();
-        manage();
         break;
       case "Add inventory":
         addInv();
-        manage();
         break;
       case "Add new product":
         addProduct();
-        manage();
         break;
       case "Exit":
         connection.end();
