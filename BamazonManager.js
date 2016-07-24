@@ -24,7 +24,16 @@ var viewProducts = function(){
 }
 
 var viewLow = function(){
-
+  connection.query('SELECT * FROM `products`', function(err, results, fields){
+    for (var i=0; i < results.length; i++){
+      if(results[i].StockQuantity < 5){
+        console.log("\nItems with low inventory:\n  Item ID: "+ results[i].ItemID +"\n  Name: "+ results[i].ProductName +"\n  Price: $"+ results[i].Price + "\n  Stock: "+ results[i].StockQuantity);
+      }
+    }
+    if (i === results.length){
+      console.log("Low inventory check complete...");
+    }
+  });
 }
 
 var addInv = function(){
